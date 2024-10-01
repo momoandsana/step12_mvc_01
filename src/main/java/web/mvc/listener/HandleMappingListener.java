@@ -30,6 +30,8 @@ public class HandleMappingListener implements ServletContextListener {
 
                 Class.forName(value);
                 Class<?> className = Class.forName(value);
+//              Java 리플렉션 기능을 이용해 문자열로 주어진 클래스 이름(value)을 사용하여
+//               해당 클래스의 Class 객체를 반환하는 메서드
 
                 Controller con=(Controller)className.getDeclaredConstructor().newInstance();
                 System.out.println("key = " + value + " / " + con);
