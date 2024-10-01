@@ -12,7 +12,7 @@
 
 <h1>user/update.jsp입니다. - 수정완료</h1>
 
-\${message} = ${message}
+${message} = ${message}
 
 
 </body>

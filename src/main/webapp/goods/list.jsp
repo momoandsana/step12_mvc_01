@@ -11,7 +11,7 @@
 <body>
 
 <h3>goods/list.jsp입니다. - 상품LIST </h3>
-\${goodsList} = ${goodsList}
+GoodsList = ${goodsList}
 
 
 </body>

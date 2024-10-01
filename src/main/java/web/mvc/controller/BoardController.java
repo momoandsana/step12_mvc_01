@@ -21,7 +21,7 @@ public class BoardController implements Controller {
         // 서비스 호출하고 결과를 받는다
         request.setAttribute("message","게시판 조회완료");
 
-        return new ModelAndView("board/list",false); // request 저장했으니까 forward 방식
+        return new ModelAndView("board/list.jsp",false); // request 저장했으니까 forward 방식
 
     }
 
