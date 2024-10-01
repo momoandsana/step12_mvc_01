@@ -1,8 +1,10 @@
 package web.mvc.controller;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
 import java.io.IOException;
 
 public class SelectController implements Controller {
@@ -13,8 +15,6 @@ public class SelectController implements Controller {
         System.out.println("SelectController.handleRequest");
 
         request.setAttribute("message", "검색된 결과정보입니다");
-
-
 
         return new ModelAndView("selectResult.jsp"); // ${message}
     }
