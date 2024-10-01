@@ -11,6 +11,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.Map;
 
 /**
@@ -21,6 +23,7 @@ import java.util.Map;
 public class DispatcherServlet extends HttpServlet {
 
     private Map<String,Controller> map;
+    private Map<String,Class<?>> classMap;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
@@ -28,6 +31,11 @@ public class DispatcherServlet extends HttpServlet {
         ServletContext application = config.getServletContext();
 
         map=(Map<String,Controller>) application.getAttribute("map"); // object 로 리턴하니까 다운캐스팅
+
+        classMap=(Map<String,Class<?>>) application.getAttribute("classMap");
+        /*
+        HandleMappingListener 에서 올린 정보들 쓰는 중
+         */
 
 
     }
@@ -38,27 +46,29 @@ public class DispatcherServlet extends HttpServlet {
         String key=request.getParameter("key");
         System.out.println("key = " + key);
 
-//        Controller con=null;
-//
-//        if(key.equals("insert"))
-//        {
-//            con=new InsertController();
-//        }
-//        else if(key.equals("select"))
-//        {
-//            con=new SelectController();
-//        }
-//        else if(key.equals("update"))
-//        {
-//            con=new UpdateController();
-//        }
-//        else if(key.equals("delete"))
-//        {
-//            con=new DeleteController();
-//        }
-//
-        Controller con=map.get(key);
-        ModelAndView mv=con.handleRequest(request,response);
+        String methodName=request.getParameter("methodName");
+
+
+        ModelAndView mv=null;
+        try
+        {
+            Controller con=map.get(key);
+            Class<?> className = classMap.get(key);
+            Method method = null;
+            method = className.getMethod(methodName, HttpServletRequest.class, HttpServletResponse.class);
+            // 이러한 함수를 호출할거라고 선언만
+            mv = (ModelAndView)method.invoke(method, request, response);
+
+        }
+        catch (NoSuchMethodException e)
+        {
+            throw new RuntimeException(e);
+        } catch (InvocationTargetException e) {
+            throw new RuntimeException(e);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+
 
         if(mv.isRedirect())
         {
